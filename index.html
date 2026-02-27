@@ -6,7 +6,7 @@
   <title>P人客廳 / unfiltered room</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Noto+Sans+TC:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -26,11 +26,47 @@
     }
 
     body {
-      font-family: 'Outfit', sans-serif;
+      font-family: 'Outfit', 'Noto Sans TC', sans-serif;
       background: linear-gradient(135deg, var(--pastel-pink-light) 0%, var(--cream) 50%, var(--pastel-yellow) 100%);
       min-height: 100vh;
       color: var(--text-dark);
       overflow-x: hidden;
+    }
+
+    /* Language toggle */
+    .lang-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 100;
+      display: flex;
+      background: rgba(255,255,255,0.7);
+      backdrop-filter: blur(10px);
+      border-radius: 50px;
+      padding: 4px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    .lang-btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 50px;
+      background: transparent;
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-light);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .lang-btn.active {
+      background: linear-gradient(135deg, var(--pastel-pink) 0%, var(--pastel-yellow-warm) 100%);
+      color: var(--text-dark);
+    }
+
+    .lang-btn:hover:not(.active) {
+      color: var(--text-dark);
     }
 
     /* Interactive floating elements */
@@ -327,8 +363,7 @@
       opacity: 0.7;
     }
 
-    .episode-card.coming-soon::after {
-      content: 'coming soon';
+    .coming-soon-badge {
       position: absolute;
       top: 20px;
       right: 20px;
@@ -523,10 +558,17 @@
       .tab { padding: 10px 18px; font-size: 0.85rem; }
       .form-group { flex-direction: column; }
       .form-group input, .form-group button { width: 100%; }
+      .lang-toggle { top: 10px; right: 10px; }
     }
   </style>
 </head>
 <body>
+  <!-- Language Toggle -->
+  <div class="lang-toggle">
+    <button class="lang-btn active" data-lang="en">EN</button>
+    <button class="lang-btn" data-lang="zh">中文</button>
+  </div>
+
   <div class="floating-elements">
     <div class="floating-circle circle-1"></div>
     <div class="floating-circle circle-2"></div>
@@ -555,41 +597,44 @@
 
       <h1 class="title">P人客廳</h1>
       <p class="subtitle">unfiltered room</p>
-      <p class="tagline">A cozy corner for unfiltered conversations. Grab something warm and stay a while.</p>
+      <p class="tagline" data-en="A cozy corner for unfiltered conversations. Grab something warm and stay a while." data-zh="一個暢所欲言的溫馨角落。倒杯熱飲，待一會兒吧。">A cozy corner for unfiltered conversations. Grab something warm and stay a while.</p>
     </header>
 
     <!-- Tabs -->
     <nav class="tabs">
-      <button class="tab active" data-tab="episodes">Episodes</button>
-      <button class="tab" data-tab="host">The Host</button>
-      <button class="tab" data-tab="podcast">The Podcast</button>
+      <button class="tab active" data-tab="episodes" data-en="Episodes" data-zh="集數">Episodes</button>
+      <button class="tab" data-tab="host" data-en="The Host" data-zh="主持人">The Host</button>
+      <button class="tab" data-tab="podcast" data-en="The Podcast" data-zh="關於節目">The Podcast</button>
     </nav>
 
     <!-- Episodes Tab -->
     <section class="tab-content active" id="episodes">
       <div class="episodes-list">
         <article class="episode-card coming-soon">
-          <div class="episode-number">Episode 01</div>
-          <h3 class="episode-title">Pilot: Welcome to the Living Room</h3>
-          <p class="episode-desc">The first episode where we set the vibe, introduce ourselves, and talk about what this space is all about.</p>
+          <span class="coming-soon-badge" data-en="coming soon" data-zh="即將推出">coming soon</span>
+          <div class="episode-number" data-en="Episode 01" data-zh="第一集">Episode 01</div>
+          <h3 class="episode-title" data-en="Pilot: Welcome to the Living Room" data-zh="試播集：歡迎來到客廳">Pilot: Welcome to the Living Room</h3>
+          <p class="episode-desc" data-en="The first episode where we set the vibe, introduce ourselves, and talk about what this space is all about." data-zh="在第一集裡，我們設定氛圍、自我介紹，聊聊這個空間是什麼。">The first episode where we set the vibe, introduce ourselves, and talk about what this space is all about.</p>
           <div class="episode-meta">
             <span>~30 min</span>
           </div>
         </article>
 
         <article class="episode-card coming-soon">
-          <div class="episode-number">Episode 02</div>
-          <h3 class="episode-title">Late Night Thoughts</h3>
-          <p class="episode-desc">Those 2am conversations that hit different. We go deep on the things we think about but rarely say out loud.</p>
+          <span class="coming-soon-badge" data-en="coming soon" data-zh="即將推出">coming soon</span>
+          <div class="episode-number" data-en="Episode 02" data-zh="第二集">Episode 02</div>
+          <h3 class="episode-title" data-en="Late Night Thoughts" data-zh="深夜的胡思亂想">Late Night Thoughts</h3>
+          <p class="episode-desc" data-en="Those 2am conversations that hit different. We go deep on the things we think about but rarely say out loud." data-zh="那些凌晨兩點特別有感覺的對話。聊那些常常想卻很少說出口的事。">Those 2am conversations that hit different. We go deep on the things we think about but rarely say out loud.</p>
           <div class="episode-meta">
             <span>~45 min</span>
           </div>
         </article>
 
         <article class="episode-card coming-soon">
-          <div class="episode-number">Episode 03</div>
-          <h3 class="episode-title">Growing Pains</h3>
-          <p class="episode-desc">Navigating adulthood, quarter-life crises, and figuring things out as we go.</p>
+          <span class="coming-soon-badge" data-en="coming soon" data-zh="即將推出">coming soon</span>
+          <div class="episode-number" data-en="Episode 03" data-zh="第三集">Episode 03</div>
+          <h3 class="episode-title" data-en="Growing Pains" data-zh="成長的煩惱">Growing Pains</h3>
+          <p class="episode-desc" data-en="Navigating adulthood, quarter-life crises, and figuring things out as we go." data-zh="摸索著成為大人、面對青年危機，邊走邊想辦法。">Navigating adulthood, quarter-life crises, and figuring things out as we go.</p>
           <div class="episode-meta">
             <span>~40 min</span>
           </div>
@@ -601,42 +646,30 @@
     <section class="tab-content" id="host">
       <div class="about-card">
         <div class="host-image">👤</div>
-        <h3>About the Host</h3>
-        <p>
-          [Your name here] — just someone who loves good conversations and cozy vibes.
-        </p>
-        <p>
-          By day, I [what you do]. By night, I'm probably overthinking everything or having deep conversations that should've ended hours ago.
-        </p>
-        <p>
-          This podcast is my attempt to recreate those living room conversations — the ones where you lose track of time and talk about everything and nothing.
-        </p>
+        <h3 data-en="About the Host" data-zh="關於主持人">About the Host</h3>
+        <p data-en="[Your name here] — just someone who loves good conversations and cozy vibes." data-zh="[你的名字] — 一個喜歡好對話和溫馨氛圍的人。">[Your name here] — just someone who loves good conversations and cozy vibes.</p>
+        <p data-en="By day, I [what you do]. By night, I'm probably overthinking everything or having deep conversations that should've ended hours ago." data-zh="白天，我[你的工作]。晚上，我大概在想太多，或是聊著那些早該結束的深度對話。">By day, I [what you do]. By night, I'm probably overthinking everything or having deep conversations that should've ended hours ago.</p>
+        <p data-en="This podcast is my attempt to recreate those living room conversations — the ones where you lose track of time and talk about everything and nothing." data-zh="這個節目是我想重現那些客廳裡的對話 — 那種聊到忘記時間，什麼都聊又好像什麼都沒聊的對話。">This podcast is my attempt to recreate those living room conversations — the ones where you lose track of time and talk about everything and nothing.</p>
       </div>
     </section>
 
     <!-- Podcast Tab -->
     <section class="tab-content" id="podcast">
       <div class="about-card">
-        <h3>About P人客廳</h3>
-        <p>
-          <strong>P人客廳</strong> (unfiltered room) is a podcast about the conversations we have when the filters come off.
-        </p>
-        <p>
-          Think of it as being invited into someone's living room — shoes off, tea in hand, no pretenses. We talk about life, feelings, random thoughts, and everything in between.
-        </p>
-        <p>
-          New episodes drop [your schedule]. Available wherever you get your podcasts.
-        </p>
+        <h3 data-en="About P人客廳" data-zh="關於 P人客廳">About P人客廳</h3>
+        <p data-en="P人客廳 (unfiltered room) is a podcast about the conversations we have when the filters come off." data-zh="P人客廳是一個關於卸下濾鏡後對話的節目。"><strong>P人客廳</strong> (unfiltered room) is a podcast about the conversations we have when the filters come off.</p>
+        <p data-en="Think of it as being invited into someone's living room — shoes off, tea in hand, no pretenses. We talk about life, feelings, random thoughts, and everything in between." data-zh="想像你被邀請到某人的客廳 — 脫掉鞋子、手裡拿著茶、沒有任何偽裝。我們聊生活、聊感受、聊隨機的想法，什麼都聊。">Think of it as being invited into someone's living room — shoes off, tea in hand, no pretenses. We talk about life, feelings, random thoughts, and everything in between.</p>
+        <p data-en="New episodes drop [your schedule]. Available wherever you get your podcasts." data-zh="新集數於 [你的時間表] 上線。各大 Podcast 平台都聽得到。">New episodes drop [your schedule]. Available wherever you get your podcasts.</p>
       </div>
     </section>
 
     <!-- Newsletter -->
     <section class="newsletter">
-      <h3>Get notified when we launch</h3>
-      <p>Be the first to know when new episodes drop.</p>
+      <h3 data-en="Get notified when we launch" data-zh="訂閱開播通知">Get notified when we launch</h3>
+      <p data-en="Be the first to know when new episodes drop." data-zh="搶先知道新集數上線。">Be the first to know when new episodes drop.</p>
       <form class="form-group" onsubmit="handleSubmit(event)">
         <input type="email" placeholder="your@email.com" required>
-        <button type="submit">notify me</button>
+        <button type="submit" data-en="notify me" data-zh="通知我">notify me</button>
       </form>
     </section>
 
@@ -653,12 +686,41 @@
       </a>
     </div>
 
-    <footer>
+    <footer data-en="made with warmth" data-zh="用溫暖製作">
       made with warmth
     </footer>
   </div>
 
   <script>
+    // Language switching
+    let currentLang = 'en';
+    const langBtns = document.querySelectorAll('.lang-btn');
+
+    langBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const lang = btn.dataset.lang;
+        if (lang === currentLang) return;
+
+        currentLang = lang;
+        langBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        // Update all translatable elements
+        document.querySelectorAll('[data-en]').forEach(el => {
+          el.textContent = el.dataset[lang];
+        });
+
+        // Save preference
+        localStorage.setItem('lang', lang);
+      });
+    });
+
+    // Load saved language preference
+    const savedLang = localStorage.getItem('lang');
+    if (savedLang && savedLang !== 'en') {
+      document.querySelector(`[data-lang="${savedLang}"]`).click();
+    }
+
     // Tab switching
     const tabs = document.querySelectorAll('.tab');
     const contents = document.querySelectorAll('.tab-content');
@@ -689,25 +751,17 @@
       const email = e.target.querySelector('input').value;
       const button = e.target.querySelector('button');
 
-      button.textContent = 'subscribed!';
+      button.textContent = currentLang === 'en' ? 'subscribed!' : '已訂閱！';
       button.style.background = 'linear-gradient(135deg, #81b29a 0%, #a7c4a0 100%)';
       e.target.querySelector('input').value = '';
 
       setTimeout(() => {
-        button.textContent = 'notify me';
+        button.textContent = button.dataset[currentLang];
         button.style.background = '';
       }, 3000);
 
       console.log('Email submitted:', email);
     }
-
-    // Episode card hover sound effect (optional - uncomment if you want)
-    // const episodes = document.querySelectorAll('.episode-card');
-    // episodes.forEach(ep => {
-    //   ep.addEventListener('mouseenter', () => {
-    //     // Add subtle interaction feedback
-    //   });
-    // });
   </script>
 </body>
 </html>
