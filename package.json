@@ -1,0 +1,20 @@
+{
+  "name": "podcast-site",
+  "version": "1.0.0",
+  "description": "P人客廳 podcast site",
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "render": "remotion render src/index.ts Intro out/intro.mp4",
+    "render-gif": "remotion render src/index.ts Intro out/intro.gif"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@remotion/cli": "^4.0.429",
+    "@remotion/player": "^4.0.429",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "remotion": "^4.0.429"
+  }
+}

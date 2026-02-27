@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>P人客廳 / unfiltered room</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --pastel-pink: #ffd6e0;
+      --pastel-pink-light: #fff0f3;
+      --pastel-yellow: #fff3cd;
+      --pastel-yellow-warm: #ffe8a3;
+      --cream: #fffbf5;
+      --text-dark: #5c4a4a;
+      --text-light: #8b7373;
+      --green: #81b29a;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: linear-gradient(135deg, var(--pastel-pink-light) 0%, var(--cream) 50%, var(--pastel-yellow) 100%);
+      min-height: 100vh;
+      color: var(--text-dark);
+      overflow-x: hidden;
+    }
+
+    /* Interactive floating elements */
+    .floating-elements {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .floating-circle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.4;
+      transition: transform 0.3s ease-out;
+    }
+
+    .circle-1 {
+      width: 300px;
+      height: 300px;
+      background: var(--pastel-pink);
+      top: -100px;
+      right: -50px;
+    }
+
+    .circle-2 {
+      width: 200px;
+      height: 200px;
+      background: var(--pastel-yellow-warm);
+      bottom: 10%;
+      left: -50px;
+    }
+
+    .circle-3 {
+      width: 150px;
+      height: 150px;
+      background: var(--pastel-pink);
+      bottom: 30%;
+      right: 5%;
+    }
+
+    /* Main container */
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 24px;
+    }
+
+    /* Header */
+    header {
+      text-align: center;
+      padding: 40px 0;
+    }
+
+    /* Window illustration - interactive */
+    .window-wrapper {
+      display: inline-block;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .window-wrapper:hover {
+      transform: scale(1.05) rotate(-2deg);
+    }
+
+    .window {
+      width: 140px;
+      height: 170px;
+      background: linear-gradient(180deg, #ffeaa7 0%, #fdcb6e 100%);
+      border-radius: 16px 16px 4px 4px;
+      position: relative;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+      overflow: hidden;
+      margin: 0 auto 30px;
+    }
+
+    .window::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: var(--text-light);
+      opacity: 0.3;
+    }
+
+    .window::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 6px;
+      transform: translateX(-50%);
+      background: var(--text-light);
+      opacity: 0.3;
+    }
+
+    .window-sill {
+      position: absolute;
+      bottom: -12px;
+      left: -15px;
+      right: -15px;
+      height: 16px;
+      background: #ddb892;
+      border-radius: 4px;
+    }
+
+    .plant {
+      position: absolute;
+      bottom: 0;
+      left: 15px;
+    }
+
+    .plant-pot {
+      width: 24px;
+      height: 20px;
+      background: #e07a5f;
+      border-radius: 3px 3px 8px 8px;
+      position: relative;
+    }
+
+    .plant-leaf {
+      position: absolute;
+      bottom: 16px;
+      left: 50%;
+      width: 14px;
+      height: 22px;
+      background: var(--green);
+      border-radius: 50%;
+      transform-origin: bottom center;
+      animation: sway 3s ease-in-out infinite;
+    }
+
+    .plant-leaf:nth-child(1) { transform: translateX(-50%) rotate(-25deg); animation-delay: 0s; }
+    .plant-leaf:nth-child(2) { transform: translateX(-50%) rotate(0deg); animation-delay: -1s; }
+    .plant-leaf:nth-child(3) { transform: translateX(-50%) rotate(25deg); animation-delay: -2s; }
+
+    @keyframes sway {
+      0%, 100% { transform: translateX(-50%) rotate(var(--rot, -25deg)); }
+      50% { transform: translateX(-50%) rotate(calc(var(--rot, -25deg) + 8deg)); }
+    }
+
+    .mug {
+      position: absolute;
+      bottom: 4px;
+      right: 18px;
+      width: 20px;
+      height: 18px;
+      background: var(--pastel-pink);
+      border-radius: 3px 3px 6px 6px;
+    }
+
+    .mug::after {
+      content: '';
+      position: absolute;
+      right: -6px;
+      top: 3px;
+      width: 8px;
+      height: 10px;
+      border: 2px solid var(--pastel-pink);
+      border-left: none;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .steam {
+      position: absolute;
+      bottom: 20px;
+      right: 22px;
+      display: flex;
+      gap: 2px;
+    }
+
+    .steam span {
+      width: 2px;
+      height: 12px;
+      background: rgba(255,255,255,0.7);
+      border-radius: 10px;
+      animation: steam 2s ease-in-out infinite;
+    }
+
+    .steam span:nth-child(2) { animation-delay: -0.5s; height: 10px; }
+    .steam span:nth-child(3) { animation-delay: -1s; height: 8px; }
+
+    @keyframes steam {
+      0%, 100% { transform: translateY(0) scaleY(1); opacity: 0.7; }
+      50% { transform: translateY(-6px) scaleY(1.2); opacity: 0; }
+    }
+
+    /* Typography */
+    .title {
+      font-size: 2.8rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      letter-spacing: -0.5px;
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      font-weight: 300;
+      color: var(--text-light);
+      margin-bottom: 16px;
+    }
+
+    .tagline {
+      font-size: 1rem;
+      color: var(--text-light);
+      max-width: 350px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 40px 0 30px;
+      flex-wrap: wrap;
+    }
+
+    .tab {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 50px;
+      background: rgba(255,255,255,0.5);
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-light);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .tab:hover {
+      background: rgba(255,255,255,0.8);
+      transform: translateY(-2px);
+    }
+
+    .tab.active {
+      background: linear-gradient(135deg, var(--pastel-pink) 0%, var(--pastel-yellow-warm) 100%);
+      color: var(--text-dark);
+      box-shadow: 0 4px 15px rgba(255,214,224,0.4);
+    }
+
+    /* Tab content */
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Episodes section */
+    .episodes-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .episode-card {
+      background: rgba(255,255,255,0.6);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 24px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .episode-card:hover {
+      background: rgba(255,255,255,0.9);
+      transform: translateX(8px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    }
+
+    .episode-card.coming-soon {
+      opacity: 0.7;
+    }
+
+    .episode-card.coming-soon::after {
+      content: 'coming soon';
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: var(--pastel-yellow-warm);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-dark);
+    }
+
+    .episode-number {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      margin-bottom: 6px;
+    }
+
+    .episode-title {
+      font-size: 1.15rem;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .episode-desc {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      line-height: 1.5;
+    }
+
+    .episode-meta {
+      display: flex;
+      gap: 16px;
+      margin-top: 12px;
+      font-size: 0.8rem;
+      color: var(--text-light);
+    }
+
+    /* About sections */
+    .about-card {
+      background: rgba(255,255,255,0.6);
+      backdrop-filter: blur(10px);
+      border-radius: 24px;
+      padding: 32px;
+      text-align: left;
+    }
+
+    .about-card h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .about-card p {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--text-light);
+      margin-bottom: 16px;
+    }
+
+    .about-card p:last-child {
+      margin-bottom: 0;
+    }
+
+    .host-image {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--pastel-pink) 0%, var(--pastel-yellow) 100%);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+    }
+
+    /* Newsletter */
+    .newsletter {
+      background: rgba(255,255,255,0.6);
+      backdrop-filter: blur(10px);
+      border-radius: 24px;
+      padding: 32px;
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    .newsletter h3 {
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+    }
+
+    .newsletter p {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .form-group input {
+      flex: 1;
+      min-width: 200px;
+      padding: 14px 20px;
+      border: 2px solid transparent;
+      border-radius: 50px;
+      background: rgba(255,255,255,0.8);
+      font-family: inherit;
+      font-size: 1rem;
+      color: var(--text-dark);
+      transition: all 0.3s ease;
+    }
+
+    .form-group input::placeholder {
+      color: var(--text-light);
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--pastel-pink);
+      background: white;
+    }
+
+    .form-group button {
+      padding: 14px 28px;
+      border: none;
+      border-radius: 50px;
+      background: linear-gradient(135deg, var(--pastel-pink) 0%, var(--pastel-yellow-warm) 100%);
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .form-group button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255,214,224,0.5);
+    }
+
+    /* Social */
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 40px;
+    }
+
+    .social-links a {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,0.6);
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+
+    .social-links a:hover {
+      background: white;
+      transform: translateY(-4px) rotate(5deg);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    }
+
+    .social-links svg {
+      width: 22px;
+      height: 22px;
+      fill: var(--text-dark);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      margin-top: 60px;
+      padding-bottom: 40px;
+      font-size: 0.85rem;
+      color: var(--text-light);
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .title { font-size: 2.2rem; }
+      .tabs { gap: 6px; }
+      .tab { padding: 10px 18px; font-size: 0.85rem; }
+      .form-group { flex-direction: column; }
+      .form-group input, .form-group button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="floating-elements">
+    <div class="floating-circle circle-1"></div>
+    <div class="floating-circle circle-2"></div>
+    <div class="floating-circle circle-3"></div>
+  </div>
+
+  <div class="container">
+    <header>
+      <div class="window-wrapper">
+        <div class="window">
+          <div class="plant">
+            <div class="plant-leaf" style="--rot: -25deg"></div>
+            <div class="plant-leaf" style="--rot: 0deg"></div>
+            <div class="plant-leaf" style="--rot: 25deg"></div>
+            <div class="plant-pot"></div>
+          </div>
+          <div class="mug"></div>
+          <div class="steam">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <div class="window-sill"></div>
+        </div>
+      </div>
+
+      <h1 class="title">P人客廳</h1>
+      <p class="subtitle">unfiltered room</p>
+      <p class="tagline">A cozy corner for unfiltered conversations. Grab something warm and stay a while.</p>
+    </header>
+
+    <!-- Tabs -->
+    <nav class="tabs">
+      <button class="tab active" data-tab="episodes">Episodes</button>
+      <button class="tab" data-tab="host">The Host</button>
+      <button class="tab" data-tab="podcast">The Podcast</button>
+    </nav>
+
+    <!-- Episodes Tab -->
+    <section class="tab-content active" id="episodes">
+      <div class="episodes-list">
+        <article class="episode-card coming-soon">
+          <div class="episode-number">Episode 01</div>
+          <h3 class="episode-title">Pilot: Welcome to the Living Room</h3>
+          <p class="episode-desc">The first episode where we set the vibe, introduce ourselves, and talk about what this space is all about.</p>
+          <div class="episode-meta">
+            <span>~30 min</span>
+          </div>
+        </article>
+
+        <article class="episode-card coming-soon">
+          <div class="episode-number">Episode 02</div>
+          <h3 class="episode-title">Late Night Thoughts</h3>
+          <p class="episode-desc">Those 2am conversations that hit different. We go deep on the things we think about but rarely say out loud.</p>
+          <div class="episode-meta">
+            <span>~45 min</span>
+          </div>
+        </article>
+
+        <article class="episode-card coming-soon">
+          <div class="episode-number">Episode 03</div>
+          <h3 class="episode-title">Growing Pains</h3>
+          <p class="episode-desc">Navigating adulthood, quarter-life crises, and figuring things out as we go.</p>
+          <div class="episode-meta">
+            <span>~40 min</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Host Tab -->
+    <section class="tab-content" id="host">
+      <div class="about-card">
+        <div class="host-image">👤</div>
+        <h3>About the Host</h3>
+        <p>
+          [Your name here] — just someone who loves good conversations and cozy vibes.
+        </p>
+        <p>
+          By day, I [what you do]. By night, I'm probably overthinking everything or having deep conversations that should've ended hours ago.
+        </p>
+        <p>
+          This podcast is my attempt to recreate those living room conversations — the ones where you lose track of time and talk about everything and nothing.
+        </p>
+      </div>
+    </section>
+
+    <!-- Podcast Tab -->
+    <section class="tab-content" id="podcast">
+      <div class="about-card">
+        <h3>About P人客廳</h3>
+        <p>
+          <strong>P人客廳</strong> (unfiltered room) is a podcast about the conversations we have when the filters come off.
+        </p>
+        <p>
+          Think of it as being invited into someone's living room — shoes off, tea in hand, no pretenses. We talk about life, feelings, random thoughts, and everything in between.
+        </p>
+        <p>
+          New episodes drop [your schedule]. Available wherever you get your podcasts.
+        </p>
+      </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter">
+      <h3>Get notified when we launch</h3>
+      <p>Be the first to know when new episodes drop.</p>
+      <form class="form-group" onsubmit="handleSubmit(event)">
+        <input type="email" placeholder="your@email.com" required>
+        <button type="submit">notify me</button>
+      </form>
+    </section>
+
+    <!-- Social -->
+    <div class="social-links">
+      <a href="#" aria-label="Spotify">
+        <svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+      </a>
+      <a href="#" aria-label="Apple Podcasts">
+        <svg viewBox="0 0 24 24"><path d="M5.34 0A5.328 5.328 0 000 5.34v13.32A5.328 5.328 0 005.34 24h13.32A5.328 5.328 0 0024 18.66V5.34A5.328 5.328 0 0018.66 0H5.34zm6.525 2.568c4.988 0 9.037 4.062 9.037 9.065 0 4.406-3.168 8.074-7.353 8.825a.376.376 0 01-.44-.373v-1.181c0-.209.168-.378.376-.393 3.146-.238 5.634-2.855 5.634-6.057 0-3.36-2.721-6.086-6.077-6.086-3.357 0-6.078 2.726-6.078 6.086 0 .313.025.62.07.922a.38.38 0 01-.376.426H5.19a.38.38 0 01-.378-.345 9.044 9.044 0 01-.047-.903c0-5.003 4.05-9.065 9.038-9.065l.062-.001zm.062 3.065a5.97 5.97 0 015.963 5.964c0 1.652-.67 3.147-1.755 4.228a.376.376 0 01-.527-.001l-.838-.844a.378.378 0 01.001-.535 4.09 4.09 0 001.202-2.898 4.092 4.092 0 00-4.096-4.097 4.092 4.092 0 00-4.097 4.097c0 1.098.43 2.096 1.13 2.833a.378.378 0 01-.003.533l-.841.841a.376.376 0 01-.531-.003 5.923 5.923 0 01-1.672-4.154 5.97 5.97 0 015.964-5.964h.1zm-.05 3.298c1.471 0 2.666 1.194 2.666 2.666 0 1.098-.665 2.04-1.613 2.447v5.067a1.053 1.053 0 01-2.105 0v-5.067a2.665 2.665 0 01-1.614-2.447 2.666 2.666 0 012.666-2.666z"/></svg>
+      </a>
+      <a href="#" aria-label="Instagram">
+        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      </a>
+    </div>
+
+    <footer>
+      made with warmth
+    </footer>
+  </div>
+
+  <script>
+    // Tab switching
+    const tabs = document.querySelectorAll('.tab');
+    const contents = document.querySelectorAll('.tab-content');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        contents.forEach(c => c.classList.remove('active'));
+
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.tab).classList.add('active');
+      });
+    });
+
+    // Parallax floating circles on mouse move
+    document.addEventListener('mousemove', (e) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 2;
+      const y = (e.clientY / window.innerHeight - 0.5) * 2;
+
+      document.querySelector('.circle-1').style.transform = `translate(${x * 20}px, ${y * 20}px)`;
+      document.querySelector('.circle-2').style.transform = `translate(${x * -15}px, ${y * -15}px)`;
+      document.querySelector('.circle-3').style.transform = `translate(${x * 25}px, ${y * 10}px)`;
+    });
+
+    // Newsletter submit
+    function handleSubmit(e) {
+      e.preventDefault();
+      const email = e.target.querySelector('input').value;
+      const button = e.target.querySelector('button');
+
+      button.textContent = 'subscribed!';
+      button.style.background = 'linear-gradient(135deg, #81b29a 0%, #a7c4a0 100%)';
+      e.target.querySelector('input').value = '';
+
+      setTimeout(() => {
+        button.textContent = 'notify me';
+        button.style.background = '';
+      }, 3000);
+
+      console.log('Email submitted:', email);
+    }
+
+    // Episode card hover sound effect (optional - uncomment if you want)
+    // const episodes = document.querySelectorAll('.episode-card');
+    // episodes.forEach(ep => {
+    //   ep.addEventListener('mouseenter', () => {
+    //     // Add subtle interaction feedback
+    //   });
+    // });
+  </script>
+</body>
+</html>
