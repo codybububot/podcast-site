@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>P人客廳 / unfiltered room</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;0,9..144,900;1,9..144,300;1,9..144,500&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Noto+Sans+TC:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      /* Warm rosy palette — cozy but refined */
+      --surface-base: #fdf6f4;
+      --surface-blush: #faeee9;
+      --surface-warm: #f5e1d8;
+      --pink: #e8a0b4;
+      --pink-deep: #d4708a;
+      --pink-soft: #f2c6d0;
+      --pink-whisper: #fce8ed;
+      --cream: #fef9f0;
+      --terracotta: #c96b55;
+      --olive: #7a9470;
+      --olive-light: #c5d4be;
+      --text-primary: #3d2c2e;
+      --text-secondary: #7a6062;
+      --text-tertiary: #b09496;
+      --rule-color: #e8d5d0;
+
+      /* Motion tokens */
+      --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --duration-enter: 600ms;
+      --duration-fast: 200ms;
+      --duration-micro: 100ms;
+
+      /* Spacing scale (4pt base) */
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 16px;
+      --space-lg: 24px;
+      --space-xl: 48px;
+      --space-2xl: 80px;
+      --space-3xl: 120px;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', 'Noto Sans TC', sans-serif;
+      background: var(--surface-base);
+      min-height: 100vh;
+      color: var(--text-primary);
+      overflow-x: hidden;
+      font-kerning: normal;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Soft ambient background shapes — refined, not random circles */
+    .ambient {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .ambient-shape {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.35;
+      animation: ambient-drift 20s ease-in-out infinite;
+    }
+
+    .ambient-1 {
+      width: 500px;
+      height: 500px;
+      background: var(--pink-soft);
+      top: -15%;
+      right: -10%;
+      animation-delay: 0s;
+    }
+
+    .ambient-2 {
+      width: 350px;
+      height: 350px;
+      background: var(--surface-warm);
+      bottom: 10%;
+      left: -8%;
+      animation-delay: -7s;
+    }
+
+    .ambient-3 {
+      width: 250px;
+      height: 250px;
+      background: var(--pink-whisper);
+      top: 50%;
+      right: 15%;
+      animation-delay: -14s;
+    }
+
+    @keyframes ambient-drift {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(15px, -20px) scale(1.05); }
+      66% { transform: translate(-10px, 15px) scale(0.95); }
+    }
+
+    /* Language toggle */
+    .lang-toggle {
+      position: fixed;
+      top: var(--space-lg);
+      right: var(--space-lg);
+      z-index: 100;
+      display: flex;
+      gap: 2px;
+    }
+
+    .lang-btn {
+      padding: 6px 14px;
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      cursor: pointer;
+      transition: color var(--duration-fast) var(--ease-out-quart);
+    }
+
+    .lang-btn.active {
+      color: var(--text-primary);
+    }
+
+    .lang-btn:hover:not(.active) {
+      color: var(--text-secondary);
+    }
+
+    .lang-btn + .lang-btn {
+      border-left: 1px solid var(--rule-color);
+    }
+
+    /* Layout */
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: var(--space-xl) var(--space-lg);
+    }
+
+    @media (min-width: 900px) {
+      .container {
+        margin-left: max(calc(50vw - 500px), 80px);
+        margin-right: var(--space-xl);
+      }
+    }
+
+    /* Header with window illustration */
+    header {
+      padding: var(--space-2xl) 0 var(--space-2xl);
+    }
+
+    .header-top {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-xl);
+    }
+
+    .header-text {
+      flex: 1;
+    }
+
+    /* Window illustration — refined version */
+    .window-scene {
+      flex-shrink: 0;
+      width: 120px;
+      cursor: pointer;
+      perspective: 400px;
+    }
+
+    .window-inner {
+      transition: transform 300ms var(--ease-out-quart);
+      transform-style: preserve-3d;
+    }
+
+    .window-frame {
+      width: 120px;
+      height: 150px;
+      background: linear-gradient(175deg, #ffe8c4 0%, #fdd68a 100%);
+      border-radius: 14px 14px 3px 3px;
+      position: relative;
+      box-shadow:
+        0 20px 60px -15px rgba(180, 120, 80, 0.2),
+        0 4px 12px rgba(180, 120, 80, 0.08);
+      overflow: hidden;
+    }
+
+    /* Warm interior glow */
+    .window-glow {
+      position: absolute;
+      inset: 8px;
+      background: radial-gradient(ellipse at 60% 70%, rgba(255, 220, 140, 0.5) 0%, transparent 70%);
+      animation: glow-pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes glow-pulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.8; }
+    }
+
+    /* Window panes */
+    .window-frame::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: var(--text-tertiary);
+      opacity: 0.2;
+      transform: translateY(-50%);
+    }
+
+    .window-frame::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 5px;
+      transform: translateX(-50%);
+      background: var(--text-tertiary);
+      opacity: 0.2;
+    }
+
+    .window-sill {
+      width: calc(100% + 20px);
+      height: 12px;
+      background: #c9a07a;
+      border-radius: 3px;
+      margin-left: -10px;
+      margin-top: -2px;
+    }
+
+    /* Plant — refined with smoother sway */
+    .plant {
+      position: absolute;
+      bottom: 6px;
+      left: 14px;
+    }
+
+    .plant-pot {
+      width: 20px;
+      height: 16px;
+      background: var(--terracotta);
+      border-radius: 2px 2px 6px 6px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .plant-leaf {
+      position: absolute;
+      bottom: 14px;
+      left: 50%;
+      width: 11px;
+      height: 20px;
+      background: var(--olive);
+      border-radius: 50%;
+      transform-origin: bottom center;
+      animation: sway-gentle 4s ease-in-out infinite;
+    }
+
+    .plant-leaf:nth-child(1) { transform: translateX(-50%) rotate(-22deg); --sway: -22deg; animation-delay: 0s; }
+    .plant-leaf:nth-child(2) { transform: translateX(-50%) rotate(0deg); --sway: 0deg; animation-delay: -1.3s; }
+    .plant-leaf:nth-child(3) { transform: translateX(-50%) rotate(22deg); --sway: 22deg; animation-delay: -2.6s; }
+
+    @keyframes sway-gentle {
+      0%, 100% { transform: translateX(-50%) rotate(var(--sway)); }
+      50% { transform: translateX(-50%) rotate(calc(var(--sway) + 6deg)); }
+    }
+
+    /* Mug with steam */
+    .mug {
+      position: absolute;
+      bottom: 6px;
+      right: 16px;
+      width: 18px;
+      height: 15px;
+      background: var(--pink);
+      border-radius: 2px 2px 5px 5px;
+    }
+
+    .mug::after {
+      content: '';
+      position: absolute;
+      right: -5px;
+      top: 2px;
+      width: 7px;
+      height: 9px;
+      border: 2px solid var(--pink);
+      border-left: none;
+      border-radius: 0 6px 6px 0;
+    }
+
+    .steam {
+      position: absolute;
+      bottom: 17px;
+      right: 20px;
+      display: flex;
+      gap: 2px;
+    }
+
+    .steam span {
+      width: 2px;
+      height: 14px;
+      background: rgba(255,255,255,0.7);
+      border-radius: 10px;
+      animation: steam-rise 2.8s ease-in-out infinite;
+    }
+
+    .steam span:nth-child(2) { animation-delay: -0.7s; height: 11px; }
+    .steam span:nth-child(3) { animation-delay: -1.4s; height: 9px; }
+
+    @keyframes steam-rise {
+      0% { transform: translateY(0) scaleY(1); opacity: 0.7; }
+      50% { transform: translateY(-14px) scaleY(1.4); opacity: 0; }
+      100% { transform: translateY(0) scaleY(1); opacity: 0.7; }
+    }
+
+    /* Pink dot accent — beside the window */
+    .window-accent {
+      width: 8px;
+      height: 8px;
+      background: var(--pink);
+      border-radius: 50%;
+      margin-top: var(--space-md);
+      margin-left: auto;
+      margin-right: auto;
+      animation: pulse-soft 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse-soft {
+      0%, 100% { opacity: 0.4; transform: scale(1); }
+      50% { opacity: 0.8; transform: scale(1.3); }
+    }
+
+    /* Title */
+    .title-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--pink-deep);
+      margin-bottom: var(--space-md);
+      display: block;
+    }
+
+    .title {
+      font-family: 'Fraunces', 'Noto Sans TC', serif;
+      font-size: clamp(2.8rem, 7vw, 4.5rem);
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      color: var(--text-primary);
+      margin-bottom: var(--space-lg);
+    }
+
+    .title .cn {
+      display: block;
+      font-size: 0.45em;
+      font-weight: 300;
+      font-style: normal;
+      color: var(--text-tertiary);
+      letter-spacing: 0.02em;
+      margin-top: 0.2em;
+    }
+
+    .tagline {
+      font-size: clamp(1.05rem, 2vw, 1.2rem);
+      color: var(--text-secondary);
+      max-width: 42ch;
+      line-height: 1.65;
+      font-weight: 300;
+    }
+
+    /* Divider — pink accent */
+    .divider--short {
+      border: none;
+      width: 48px;
+      background: var(--pink);
+      height: 2px;
+      margin: var(--space-xl) 0;
+    }
+
+    /* Navigation — with soft pink active state */
+    .nav {
+      display: flex;
+      gap: var(--space-lg);
+      margin-bottom: var(--space-xl);
+      flex-wrap: wrap;
+    }
+
+    .nav-link {
+      padding: 0;
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      cursor: pointer;
+      transition: color var(--duration-fast) var(--ease-out-quart);
+      position: relative;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1.5px;
+      background: var(--pink-deep);
+      transition: width 300ms var(--ease-out-quart);
+    }
+
+    .nav-link:hover {
+      color: var(--text-primary);
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .nav-link.active {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .nav-link.active::after {
+      width: 100%;
+    }
+
+    /* Tab content */
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: content-enter var(--duration-enter) var(--ease-out-quart);
+    }
+
+    @keyframes content-enter {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Episodes — warm hover with pink left border */
+    .episode {
+      padding: var(--space-xl) 0;
+      padding-left: var(--space-md);
+      border-bottom: 1px solid var(--rule-color);
+      border-left: 2px solid transparent;
+      cursor: pointer;
+      transition: border-color 300ms var(--ease-out-quart),
+                  background 300ms var(--ease-out-quart),
+                  padding-left 300ms var(--ease-out-quart);
+    }
+
+    .episode:first-child {
+      padding-top: var(--space-md);
+    }
+
+    .episode:last-child {
+      border-bottom: none;
+    }
+
+    .episode:hover {
+      border-left-color: var(--pink);
+      background: linear-gradient(90deg, var(--pink-whisper) 0%, transparent 60%);
+      padding-left: var(--space-lg);
+    }
+
+    .episode-header {
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-md);
+      margin-bottom: var(--space-sm);
+      flex-wrap: wrap;
+    }
+
+    .episode-number {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--pink-deep);
+    }
+
+    .episode-badge {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      background: var(--pink-whisper);
+      padding: 3px 12px;
+      border-radius: 2px;
+    }
+
+    .episode-title {
+      font-family: 'Fraunces', 'Noto Sans TC', serif;
+      font-size: clamp(1.4rem, 3vw, 1.8rem);
+      font-weight: 500;
+      line-height: 1.25;
+      margin-bottom: var(--space-md);
+      color: var(--text-primary);
+    }
+
+    .episode-desc {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 58ch;
+      font-weight: 300;
+    }
+
+    .episode-meta {
+      display: flex;
+      gap: var(--space-lg);
+      margin-top: var(--space-md);
+      font-size: 0.8rem;
+      color: var(--text-tertiary);
+      letter-spacing: 0.02em;
+    }
+
+    /* Hosts — with rosy markers */
+    .hosts {
+      display: grid;
+      gap: var(--space-2xl);
+    }
+
+    .host {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+    }
+
+    @media (min-width: 600px) {
+      .host {
+        grid-template-columns: 72px 1fr;
+        gap: var(--space-lg);
+        align-items: start;
+      }
+    }
+
+    .host-marker {
+      width: 72px;
+      height: 72px;
+      background: var(--pink-whisper);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: transform 500ms var(--ease-out-quart),
+                  background 300ms var(--ease-out-quart);
+    }
+
+    .host:hover .host-marker {
+      transform: rotate(-8deg) scale(1.08);
+      background: var(--pink-soft);
+    }
+
+    .host-marker span {
+      font-family: 'Fraunces', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--pink-deep);
+    }
+
+    .host-name {
+      font-family: 'Fraunces', 'Noto Sans TC', serif;
+      font-size: 1.3rem;
+      font-weight: 500;
+      margin-bottom: var(--space-sm);
+    }
+
+    .host-bio {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    /* About */
+    .about-text {
+      font-size: clamp(1.05rem, 2vw, 1.15rem);
+      color: var(--text-secondary);
+      line-height: 1.8;
+      max-width: 52ch;
+      font-weight: 300;
+    }
+
+    .about-text strong {
+      color: var(--pink-deep);
+      font-weight: 500;
+    }
+
+    /* Newsletter — compact, centered */
+    .newsletter-section {
+      margin-top: var(--space-2xl);
+      padding-top: var(--space-xl);
+      border-top: 1px solid var(--rule-color);
+      text-align: center;
+    }
+
+    .newsletter-desc {
+      font-size: 0.85rem;
+      color: var(--text-tertiary);
+      margin-bottom: var(--space-md);
+      font-weight: 300;
+    }
+
+    .form-row {
+      display: flex;
+      gap: var(--space-xs);
+      max-width: 340px;
+      margin: 0 auto;
+    }
+
+    .form-row input {
+      flex: 1;
+      padding: 10px 16px;
+      border: 1px solid var(--rule-color);
+      background: transparent;
+      font-family: inherit;
+      font-size: 0.85rem;
+      color: var(--text-primary);
+      border-radius: 0;
+      transition: border-color var(--duration-fast) var(--ease-out-quart);
+    }
+
+    .form-row input::placeholder {
+      color: var(--text-tertiary);
+    }
+
+    .form-row input:focus {
+      outline: none;
+      border-color: var(--pink-deep);
+    }
+
+    .form-row button {
+      padding: 10px 20px;
+      border: none;
+      background: var(--pink-deep);
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background var(--duration-fast) var(--ease-out-quart),
+                  transform var(--duration-micro) var(--ease-out-quart);
+      white-space: nowrap;
+    }
+
+    .form-row button:hover {
+      background: var(--terracotta);
+    }
+
+    .form-row button:active {
+      transform: scale(0.97);
+    }
+
+    /* Social — with hover color */
+    .social {
+      display: flex;
+      gap: var(--space-lg);
+      margin-top: var(--space-2xl);
+    }
+
+    .social a {
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      text-decoration: none;
+      transition: color var(--duration-fast) var(--ease-out-quart);
+    }
+
+    .social a:hover {
+      color: var(--pink-deep);
+    }
+
+    /* Footer */
+    footer {
+      margin-top: var(--space-3xl);
+      padding-bottom: var(--space-xl);
+      font-size: 0.75rem;
+      color: var(--text-tertiary);
+      letter-spacing: 0.05em;
+    }
+
+    /* Side mark */
+    .side-mark {
+      display: none;
+    }
+
+    @media (min-width: 1100px) {
+      .side-mark {
+        display: block;
+        position: fixed;
+        right: 40px;
+        top: 50%;
+        transform: translateY(-50%) rotate(90deg);
+        font-size: 0.65rem;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: var(--pink-soft);
+        white-space: nowrap;
+      }
+    }
+
+    /* Entrance animations — staggered */
+    .reveal {
+      opacity: 0;
+      transform: translateY(16px);
+      animation: reveal-in var(--duration-enter) var(--ease-out-quart) forwards;
+    }
+
+    .reveal-d1 { animation-delay: 100ms; }
+    .reveal-d2 { animation-delay: 200ms; }
+    .reveal-d3 { animation-delay: 300ms; }
+    .reveal-d4 { animation-delay: 400ms; }
+    .reveal-d5 { animation-delay: 500ms; }
+    .reveal-d6 { animation-delay: 600ms; }
+
+    @keyframes reveal-in {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal {
+        animation: fade-only 200ms ease-out forwards;
+      }
+      @keyframes fade-only {
+        to { opacity: 1; transform: none; }
+      }
+      .ambient-shape { animation: none; }
+      .plant-leaf { animation: none; }
+      .steam span { animation: none; opacity: 0.3; }
+      .window-accent { animation: none; opacity: 0.5; }
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .container {
+        padding: var(--space-lg) var(--space-md);
+      }
+      header {
+        padding: var(--space-xl) 0 var(--space-xl);
+      }
+      .header-top {
+        flex-direction: column-reverse;
+        align-items: flex-start;
+        gap: var(--space-lg);
+      }
+      .window-scene {
+        width: 90px;
+      }
+      .window-frame {
+        width: 90px;
+        height: 112px;
+      }
+      .form-row {
+        flex-direction: column;
+      }
+      .form-row button {
+        text-align: center;
+      }
+      .lang-toggle {
+        top: var(--space-md);
+        right: var(--space-md);
+      }
+      .social {
+        flex-wrap: wrap;
+        gap: var(--space-md);
+      }
+      .newsletter-section {
+        margin-left: calc(-1 * var(--space-md));
+        margin-right: calc(-1 * var(--space-md));
+        padding: var(--space-xl) var(--space-md);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Soft ambient blurs -->
+  <div class="ambient">
+    <div class="ambient-shape ambient-1"></div>
+    <div class="ambient-shape ambient-2"></div>
+    <div class="ambient-shape ambient-3"></div>
+  </div>
+
+  <!-- Language Toggle -->
+  <div class="lang-toggle">
+    <button class="lang-btn active" data-lang="en">En</button>
+    <button class="lang-btn" data-lang="zh">中文</button>
+  </div>
+
+  <!-- Side decoration -->
+  <div class="side-mark">a podcast by tongtong & clara</div>
+
+  <div class="container">
+    <header>
+      <div class="header-top">
+        <div class="header-text">
+          <span class="title-label reveal">A Podcast</span>
+          <h1 class="title reveal reveal-d1" id="main-title">
+            Unfiltered Room
+            <span class="cn" id="sub-title">P人客廳</span>
+          </h1>
+          <p class="tagline reveal reveal-d2" data-en="Where we sit down with the most interesting minds in AI." data-zh="和AI圈最有意思的人，坐下來嗑嗑瓜子。">Where we sit down with the most interesting minds in AI.</p>
+        </div>
+
+        <!-- Cozy window illustration -->
+        <div class="window-scene reveal reveal-d3">
+          <div class="window-inner">
+          <div class="window-frame">
+            <div class="window-glow"></div>
+            <div class="plant">
+              <div class="plant-leaf" style="--sway: -22deg"></div>
+              <div class="plant-leaf" style="--sway: 0deg"></div>
+              <div class="plant-leaf" style="--sway: 22deg"></div>
+              <div class="plant-pot"></div>
+            </div>
+            <div class="mug"></div>
+            <div class="steam">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+          <div class="window-sill"></div>
+          <div class="window-accent"></div>
+          </div><!-- /window-inner -->
+        </div>
+      </div>
+    </header>
+
+    <hr class="divider--short reveal reveal-d4">
+
+    <!-- Navigation -->
+    <nav class="nav reveal reveal-d5">
+      <button class="nav-link active" data-tab="episodes" data-en="Episodes" data-zh="集數">Episodes</button>
+      <button class="nav-link" data-tab="host" data-en="The Hosts" data-zh="主持人">The Hosts</button>
+      <button class="nav-link" data-tab="podcast" data-en="About" data-zh="關於">About</button>
+    </nav>
+
+    <!-- Episodes Tab -->
+    <section class="tab-content active" id="episodes">
+      <article class="episode">
+        <div class="episode-header">
+          <span class="episode-number">EP 01</span>
+          <span class="episode-badge" data-en="Coming Soon" data-zh="即將推出">Coming Soon</span>
+        </div>
+        <h3 class="episode-title" data-en="Where Do Ideas Come From" data-zh="想法從哪裡來">Where Do Ideas Come From</h3>
+        <p class="episode-desc" data-en="Tongtong & Clara sit down with Shen Qiajin, founder of ideaFlow 想法流 — the Shenzhen-based AI startup reimagining content creation. Building at the frontier of China's AI wave, why emotional resonance is the hardest product problem, and why the only bets worth making are non-consensus ones." data-zh="对话ideaFlow 想法流创始人沈恰进。聊深圳AI创业是什么感觉、怎么做出真正打动人的产品，还有为什么反共识的事才值得做。">Tongtong & Clara sit down with Shen Qiajin, founder of ideaFlow 想法流 — the Shenzhen-based AI startup reimagining content creation. Building at the frontier of China's AI wave, why emotional resonance is the hardest product problem, and why the only bets worth making are non-consensus ones.</p>
+        <div class="episode-meta">
+          <span>~45 min</span>
+        </div>
+      </article>
+    </section>
+
+    <!-- Host Tab -->
+    <section class="tab-content" id="host">
+      <div class="hosts">
+        <div class="host">
+          <div class="host-marker"><span>T</span></div>
+          <div>
+            <h3 class="host-name" data-en="Tongtong" data-zh="Tongtong">Tongtong</h3>
+            <p class="host-bio" data-en="Investor at FutureX Capital, focused on consumer AI and 📖🎵🥊🎾⛳️." data-zh="FutureX Capital投资人，专注toC AI和📖🎵🥊🎾⛳️。">Investor at FutureX Capital, focused on consumer AI and 📖🎵🥊🎾⛳️.</p>
+          </div>
+        </div>
+        <div class="host">
+          <div class="host-marker"><span>C</span></div>
+          <div>
+            <h3 class="host-name" data-en="Clara" data-zh="Clara">Clara</h3>
+            <p class="host-bio" data-en="Investor at FutureX Capital, focused on consumer AI and capybaras." data-zh="FutureX Capital投资人，专注toC AI和卡皮巴拉。">Investor at FutureX Capital, focused on consumer AI and capybaras.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Podcast Tab -->
+    <section class="tab-content" id="podcast">
+      <p class="about-text" data-en="P人客廳 is what happens when two young VCs stop pretending they have it all figured out. Investing across Asia and the Bay Area, we watch AI rewrite the rules in real time — and we'd rather talk about it honestly than perform on a panel. This is the living room we never had at work." data-zh="白天看項目，晚上想太多，不如坐下来好好聊。"><strong>P人客廳</strong> is what happens when two young VCs stop pretending they have it all figured out. Investing across Asia and the Bay Area, we watch AI rewrite the rules in real time — and we'd rather talk about it honestly than perform on a panel. This is the living room we never had at work.</p>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter-section reveal reveal-d6">
+      <h3 class="newsletter-title" data-en="Get notified" data-zh="訂閱通知">Get notified</h3>
+      <p class="newsletter-desc" data-en="Be the first to know when new episodes drop." data-zh="第一时间蹲最新一期。">Be the first to know when new episodes drop.</p>
+      <form class="form-row" onsubmit="handleSubmit(event)">
+        <input type="email" placeholder="your@email.com" required>
+        <button type="submit" data-en="Subscribe" data-zh="訂閱">Subscribe</button>
+      </form>
+    </section>
+
+    <!-- Social -->
+    <div class="social">
+      <a href="#" data-en="Spotify" data-zh="Spotify">Spotify</a>
+      <a href="#" data-en="Apple Podcasts" data-zh="Apple Podcasts">Apple Podcasts</a>
+      <a href="#" data-en="Instagram" data-zh="Instagram">Instagram</a>
+    </div>
+
+    <footer data-en="made with warmth" data-zh="用心制作">
+      made with warmth
+    </footer>
+  </div>
+
+  <script>
+    // Language switching
+    let currentLang = 'en';
+    const langBtns = document.querySelectorAll('.lang-btn');
+
+    langBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const lang = btn.dataset.lang;
+        if (lang === currentLang) return;
+
+        currentLang = lang;
+        langBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        // Swap title hierarchy
+        const mainTitle = document.getElementById('main-title');
+        const subTitle = document.getElementById('sub-title');
+        if (lang === 'zh') {
+          mainTitle.childNodes[0].textContent = '\n            P人客廳\n            ';
+          subTitle.textContent = '只聊廢話';
+        } else {
+          mainTitle.childNodes[0].textContent = '\n            Unfiltered Room\n            ';
+          subTitle.textContent = 'P人客廳';
+        }
+
+        document.querySelectorAll('[data-en]').forEach(el => {
+          if (el.tagName === 'INPUT') return;
+          if (el.classList.contains('about-text')) {
+            const text = el.dataset[lang];
+            if (lang === 'en') {
+              el.innerHTML = '<strong>P人客廳</strong>' + text.substring(text.indexOf('P人客廳') + 4);
+            } else {
+              el.textContent = text;
+            }
+          } else {
+            el.textContent = el.dataset[lang];
+          }
+        });
+
+        localStorage.setItem('lang', lang);
+      });
+    });
+
+    const savedLang = localStorage.getItem('lang');
+    if (savedLang && savedLang !== 'en') {
+      document.querySelector(`[data-lang="${savedLang}"]`)?.click();
+    }
+
+    // Tab switching
+    const tabs = document.querySelectorAll('.nav-link');
+    const contents = document.querySelectorAll('.tab-content');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        contents.forEach(c => c.classList.remove('active'));
+
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.tab).classList.add('active');
+      });
+    });
+
+    // Subtle parallax on ambient shapes
+    document.addEventListener('mousemove', (e) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 2;
+      const y = (e.clientY / window.innerHeight - 0.5) * 2;
+
+      document.querySelector('.ambient-1').style.transform = `translate(${x * 12}px, ${y * 12}px)`;
+      document.querySelector('.ambient-2').style.transform = `translate(${x * -8}px, ${y * -8}px)`;
+      document.querySelector('.ambient-3').style.transform = `translate(${x * 15}px, ${y * 6}px)`;
+    });
+
+    // Window 3D tilt on mouse move
+    const windowScene = document.querySelector('.window-scene');
+    const windowInner = document.querySelector('.window-inner');
+
+    windowScene.addEventListener('mousemove', (e) => {
+      const rect = windowScene.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;   // -0.5 to 0.5
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+      const rotateY = x * 20;   // tilt left/right up to 10deg
+      const rotateX = y * -20;  // tilt up/down
+
+      windowInner.style.transform = `rotateY(${rotateY}deg) rotateX(${rotateX}deg) scale(1.05)`;
+    });
+
+    windowScene.addEventListener('mouseleave', () => {
+      windowInner.style.transform = 'rotateY(0deg) rotateX(0deg) scale(1)';
+    });
+
+    // Newsletter submit
+    function handleSubmit(e) {
+      e.preventDefault();
+      const email = e.target.querySelector('input').value;
+      const button = e.target.querySelector('button');
+
+      button.textContent = currentLang === 'en' ? 'Subscribed' : '已訂閱';
+      button.style.background = 'var(--olive)';
+      e.target.querySelector('input').value = '';
+
+      setTimeout(() => {
+        button.textContent = button.dataset[currentLang];
+        button.style.background = '';
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
