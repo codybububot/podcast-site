@@ -5,7 +5,8 @@
   "scripts": {
     "studio": "remotion studio src/index.ts",
     "render": "remotion render src/index.ts Intro out/intro.mp4",
-    "render-gif": "remotion render src/index.ts Intro out/intro.gif"
+    "render-gif": "remotion render src/index.ts Intro out/intro.gif",
+    "prep": "node scripts/interview-prep.mjs"
   },
   "keywords": [],
   "author": "",
