@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>P人客廳 / unfiltered room</title>
+  <title>P人客廳 / The Unplanned</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;0,9..144,900;1,9..144,300;1,9..144,500&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Noto+Sans+TC:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;0,9..144,900;1,9..144,300;1,9..144,500&family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Noto+Sans+TC:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -365,23 +365,27 @@
     }
 
     .title {
-      font-family: 'Fraunces', 'Noto Sans TC', serif;
-      font-size: clamp(2.8rem, 7vw, 4.5rem);
-      font-weight: 900;
-      line-height: 0.95;
-      letter-spacing: -0.03em;
+      font-family: 'Playfair Display', 'Noto Sans TC', serif;
+      font-size: clamp(3rem, 8vw, 5rem);
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: -0.01em;
       color: var(--text-primary);
-      margin-bottom: var(--space-lg);
+      margin-bottom: var(--space-xl);
     }
 
     .title .cn {
-      display: block;
+      display: none;
       font-size: 0.45em;
       font-weight: 300;
       font-style: normal;
       color: var(--text-tertiary);
       letter-spacing: 0.02em;
       margin-top: 0.2em;
+    }
+
+    body.lang-zh .title .cn {
+      display: block;
     }
 
     .tagline {
@@ -521,7 +525,7 @@
     }
 
     .episode-title {
-      font-family: 'Fraunces', 'Noto Sans TC', serif;
+      font-family: 'Playfair Display', 'Noto Sans TC', serif;
       font-size: clamp(1.4rem, 3vw, 1.8rem);
       font-weight: 500;
       line-height: 1.25;
@@ -592,7 +596,7 @@
     }
 
     .host-name {
-      font-family: 'Fraunces', 'Noto Sans TC', serif;
+      font-family: 'Playfair Display', 'Noto Sans TC', serif;
       font-size: 1.3rem;
       font-weight: 500;
       margin-bottom: var(--space-sm);
@@ -828,7 +832,7 @@
   </div>
 
   <!-- Side decoration -->
-  <div class="side-mark">a podcast by tongtong & clara</div>
+  <div class="side-mark">The Unplanned · a podcast by tongtong & clara</div>
 
   <div class="container">
     <header>
@@ -836,10 +840,10 @@
         <div class="header-text">
           <span class="title-label reveal">A Podcast</span>
           <h1 class="title reveal reveal-d1" id="main-title">
-            Unfiltered Room
+            The Unplanned
             <span class="cn" id="sub-title">P人客廳</span>
           </h1>
-          <p class="tagline reveal reveal-d2" data-en="Where we sit down with the most interesting minds in AI." data-zh="和AI圈最有意思的人，坐下來嗑嗑瓜子。">Where we sit down with the most interesting minds in AI.</p>
+          <p class="tagline reveal reveal-d2" data-en="Venture stories that never went according to plan." data-zh="和AI圈最有意思的人，坐下來嗑嗑瓜子。">Venture stories that never went according to plan.</p>
         </div>
 
         <!-- Cozy window illustration -->
@@ -878,16 +882,21 @@
 
     <!-- Episodes Tab -->
     <section class="tab-content active" id="episodes">
-      <article class="episode">
+      <article class="episode" onclick="window.open('https://open.spotify.com/episode/5Hkm1PTaFfBJZQrcjZWjOW?si=vpR1wBXrTHuGEnN72YQ21Q', '_blank')">
         <div class="episode-header">
           <span class="episode-number">EP 01</span>
+        </div>
+        <h3 class="episode-title" data-en="Where Do Ideas Come From? | Building an AI-Native Organization" data-zh="想法從哪裡來？| 打造 AI 原生組織">Where Do Ideas Come From? | Building an AI-Native Organization</h3>
+        <p class="episode-desc" data-en="Tongtong and Clara talk with Qiajin Shen, founder of ideaFlow, the AI-native platform behind 造梦次元 — one of China's fastest-growing AI content communities with over 10 million users. This episode explores how AI-native startups are built, what an AI-native organization actually looks like, and why emotional resonance may be the hardest problem in AI product design. If you're interested in AI startups, AI product thinking, and the future of AI-native content platforms, this conversation offers a founder's perspective from one of China's most active AI communities." data-zh="彤彤和 Clara 与 ideaFlow 创始人沈洽金对谈。ideaFlow 旗下产品「造梦次元」是中国增长最快的 AI 原生内容社区之一，累计用户已超过 1000 万。这一期我们讨论：AI 原生组织是如何运作的？AI 创业公司在产品与组织层面有什么不同？以及为什么"情绪共鸣"可能是 AI 产品设计中最难解决的问题。如果你关注 AI 创业、AI 产品以及 AI 内容平台的发展，这一期提供了一位创始人的一线视角。">Tongtong and Clara talk with Qiajin Shen, founder of ideaFlow, the AI-native platform behind 造梦次元 — one of China's fastest-growing AI content communities with over 10 million users. This episode explores how AI-native startups are built, what an AI-native organization actually looks like, and why emotional resonance may be the hardest problem in AI product design. If you're interested in AI startups, AI product thinking, and the future of AI-native content platforms, this conversation offers a founder's perspective from one of China's most active AI communities.</p>
+      </article>
+
+      <article class="episode">
+        <div class="episode-header">
+          <span class="episode-number">EP 02</span>
           <span class="episode-badge" data-en="Coming Soon" data-zh="即將推出">Coming Soon</span>
         </div>
-        <h3 class="episode-title" data-en="Where Do Ideas Come From" data-zh="想法從哪裡來">Where Do Ideas Come From</h3>
-        <p class="episode-desc" data-en="Tongtong & Clara sit down with Shen Qiajin, founder of ideaFlow 想法流 — the Shenzhen-based AI startup reimagining content creation. Building at the frontier of China's AI wave, why emotional resonance is the hardest product problem, and why the only bets worth making are non-consensus ones." data-zh="对话ideaFlow 想法流创始人沈恰进。聊深圳AI创业是什么感觉、怎么做出真正打动人的产品，还有为什么反共识的事才值得做。">Tongtong & Clara sit down with Shen Qiajin, founder of ideaFlow 想法流 — the Shenzhen-based AI startup reimagining content creation. Building at the frontier of China's AI wave, why emotional resonance is the hardest product problem, and why the only bets worth making are non-consensus ones.</p>
-        <div class="episode-meta">
-          <span>~45 min</span>
-        </div>
+        <h3 class="episode-title" data-en="The Changes and the Constant | AI, Belief, and Fate" data-zh="变与不变 | AI、信念与命运">The Changes and the Constant | AI, Belief, and Fate</h3>
+        <p class="episode-desc" data-en="Levy Cheng built FateTell after nearly 100 investor rejections. Many believed AI fortune-telling was just a gimmick. Today, thousands of users pay for AI-generated life readings based on traditional Chinese metaphysics. In this episode, we explore belief, responsibility, and AI products that influence human decisions. What are people really buying when they pay for fate? And when someone changes their life based on an AI reading, who holds responsibility? For listeners interested in AI startups, AI consumer products, and the intersection of technology and culture, this conversation offers a unique perspective." data-zh="Levy Cheng 在被将近 100 位投资人拒绝后，仍然创立了 FateTell。很多人曾认为 AI 算命只是噱头，但如今已有数千用户为 AI 生成的人生解读付费。这一期我们讨论 AI、信念与责任之间的关系：当人们为"命运"付费时，他们真正购买的是什么？当一个人因为 AI 的解读改变人生时，责任又该落在谁身上？如果你关注 AI 创业、AI 消费产品，以及科技与文化的交汇，这一期提供了一个不同寻常的视角。">Levy Cheng built FateTell after nearly 100 investor rejections. Many believed AI fortune-telling was just a gimmick. Today, thousands of users pay for AI-generated life readings based on traditional Chinese metaphysics. In this episode, we explore belief, responsibility, and AI products that influence human decisions. What are people really buying when they pay for fate? And when someone changes their life based on an AI reading, who holds responsibility? For listeners interested in AI startups, AI consumer products, and the intersection of technology and culture, this conversation offers a unique perspective.</p>
       </article>
     </section>
 
@@ -913,24 +922,15 @@
 
     <!-- Podcast Tab -->
     <section class="tab-content" id="podcast">
-      <p class="about-text" data-en="P人客廳 is what happens when two young VCs stop pretending they have it all figured out. Investing across Asia and the Bay Area, we watch AI rewrite the rules in real time — and we'd rather talk about it honestly than perform on a panel. This is the living room we never had at work." data-zh="白天看項目，晚上想太多，不如坐下来好好聊。"><strong>P人客廳</strong> is what happens when two young VCs stop pretending they have it all figured out. Investing across Asia and the Bay Area, we watch AI rewrite the rules in real time — and we'd rather talk about it honestly than perform on a panel. This is the living room we never had at work.</p>
-    </section>
-
-    <!-- Newsletter -->
-    <section class="newsletter-section reveal reveal-d6">
-      <h3 class="newsletter-title" data-en="Get notified" data-zh="訂閱通知">Get notified</h3>
-      <p class="newsletter-desc" data-en="Be the first to know when new episodes drop." data-zh="第一时间蹲最新一期。">Be the first to know when new episodes drop.</p>
-      <form class="form-row" onsubmit="handleSubmit(event)">
-        <input type="email" placeholder="your@email.com" required>
-        <button type="submit" data-en="Subscribe" data-zh="訂閱">Subscribe</button>
-      </form>
+      <p class="about-text" data-en="The Unplanned is what happens when two young VCs stop pretending they have it all figured out. Investing across Asia and the Bay Area, we watch AI rewrite the rules in real time — and we'd rather talk about it honestly than perform on a panel. This is the living room we never had at work." data-zh="白天看項目，晚上想太多，不如坐下来好好聊。"><strong>The Unplanned</strong> is what happens when two young VCs stop pretending they have it all figured out. Investing across Asia and the Bay Area, we watch AI rewrite the rules in real time — and we'd rather talk about it honestly than perform on a panel. This is the living room we never had at work.</p>
     </section>
 
     <!-- Social -->
     <div class="social">
-      <a href="#" data-en="Spotify" data-zh="Spotify">Spotify</a>
-      <a href="#" data-en="Apple Podcasts" data-zh="Apple Podcasts">Apple Podcasts</a>
-      <a href="#" data-en="Instagram" data-zh="Instagram">Instagram</a>
+      <a href="https://open.spotify.com/show/033cyHplEFGw5AYxsdxpvj?si=QTD3WBU-Qx6qqbZ6YKK4GQ" target="_blank" rel="noopener" data-en="Spotify" data-zh="Spotify">Spotify</a>
+      <a href="https://www.youtube.com/@unplannedventurepodcast" target="_blank" rel="noopener" data-en="YouTube" data-zh="YouTube">YouTube</a>
+      <a href="#" target="_blank" rel="noopener" data-en="小宇宙" data-zh="小宇宙">小宇宙</a>
+      <a href="https://unplannedventurepodcast.substack.com/" target="_blank" rel="noopener" data-en="Substack" data-zh="Substack">Substack</a>
     </div>
 
     <footer data-en="made with warmth" data-zh="用心制作">
@@ -952,14 +952,16 @@
         langBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
 
-        // Swap title hierarchy
+        // Swap title hierarchy and toggle subtitle visibility
         const mainTitle = document.getElementById('main-title');
         const subTitle = document.getElementById('sub-title');
         if (lang === 'zh') {
+          document.body.classList.add('lang-zh');
           mainTitle.childNodes[0].textContent = '\n            P人客廳\n            ';
-          subTitle.textContent = '只聊廢話';
+          subTitle.textContent = '关于 AI 和那些不按计划发生的事';
         } else {
-          mainTitle.childNodes[0].textContent = '\n            Unfiltered Room\n            ';
+          document.body.classList.remove('lang-zh');
+          mainTitle.childNodes[0].textContent = '\n            The Unplanned\n            ';
           subTitle.textContent = 'P人客廳';
         }
 
@@ -968,7 +970,7 @@
           if (el.classList.contains('about-text')) {
             const text = el.dataset[lang];
             if (lang === 'en') {
-              el.innerHTML = '<strong>P人客廳</strong>' + text.substring(text.indexOf('P人客廳') + 4);
+              el.innerHTML = '<strong>The Unplanned</strong>' + text.substring(text.indexOf('The Unplanned') + 13);
             } else {
               el.textContent = text;
             }
