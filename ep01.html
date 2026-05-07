@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EP 01 — Where Do Ideas Come From? | The Unplanned</title>
+  <link rel="icon" type="image/jpeg" href="favicon.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,300;1,9..144,500&family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Noto+Sans+TC:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --surface-base: #fdf6f4;
+      --surface-blush: #faeee9;
+      --surface-warm: #f5e1d8;
+      --pink: #e8a0b4;
+      --pink-deep: #d4708a;
+      --pink-soft: #f2c6d0;
+      --pink-whisper: #fce8ed;
+      --cream: #fef9f0;
+      --terracotta: #c96b55;
+      --olive: #7a9470;
+      --olive-light: #c5d4be;
+      --text-primary: #3d2c2e;
+      --text-secondary: #7a6062;
+      --text-tertiary: #b09496;
+      --rule-color: #e8d5d0;
+      --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --duration-enter: 600ms;
+      --duration-fast: 200ms;
+      --duration-micro: 100ms;
+      --space-xs: 4px;
+      --space-sm: 8px;
+      --space-md: 16px;
+      --space-lg: 24px;
+      --space-xl: 48px;
+      --space-2xl: 80px;
+      --space-3xl: 120px;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', 'Noto Sans TC', sans-serif;
+      background: var(--surface-base);
+      min-height: 100vh;
+      color: var(--text-primary);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .ambient {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none; z-index: 0; overflow: hidden;
+    }
+    .ambient-shape {
+      position: absolute; border-radius: 50%;
+      filter: blur(80px); opacity: 0.35;
+      animation: ambient-drift 20s ease-in-out infinite;
+    }
+    .ambient-1 { width: 500px; height: 500px; background: var(--pink-soft); top: -15%; right: -10%; animation-delay: 0s; }
+    .ambient-2 { width: 350px; height: 350px; background: var(--surface-warm); bottom: 10%; left: -8%; animation-delay: -7s; }
+    .ambient-3 { width: 250px; height: 250px; background: var(--pink-whisper); top: 50%; right: 15%; animation-delay: -14s; }
+    @keyframes ambient-drift {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(15px, -20px) scale(1.05); }
+      66% { transform: translate(-10px, 15px) scale(0.95); }
+    }
+
+    .lang-toggle {
+      position: fixed; top: var(--space-lg); right: var(--space-lg);
+      z-index: 100; display: flex; gap: 2px;
+    }
+    .lang-btn {
+      padding: 6px 14px; border: none; background: transparent;
+      font-family: inherit; font-size: 0.8rem; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--text-tertiary); cursor: pointer;
+      transition: color var(--duration-fast) var(--ease-out-quart);
+    }
+    .lang-btn.active { color: var(--text-primary); }
+    .lang-btn:hover:not(.active) { color: var(--text-secondary); }
+    .lang-btn + .lang-btn { border-left: 1px solid var(--rule-color); }
+
+    .container {
+      position: relative; z-index: 1;
+      max-width: 720px; margin: 0 auto;
+      padding: var(--space-xl) var(--space-lg);
+    }
+    @media (min-width: 900px) {
+      .container {
+        margin-left: max(calc(50vw - 500px), 80px);
+        margin-right: var(--space-xl);
+      }
+    }
+
+    /* Back link */
+    .back-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.8rem; font-weight: 500; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--text-tertiary);
+      text-decoration: none;
+      transition: color var(--duration-fast) var(--ease-out-quart);
+      margin-bottom: var(--space-xl);
+    }
+    .back-link:hover { color: var(--pink-deep); }
+    .back-link::before { content: '←'; font-size: 0.9em; }
+
+    /* Episode header */
+    .ep-label {
+      font-size: 0.75rem; font-weight: 500; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--pink-deep);
+      margin-bottom: var(--space-md); display: block;
+    }
+    .ep-title {
+      font-family: 'Playfair Display', 'Noto Sans TC', serif;
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      font-weight: 500; line-height: 1.2;
+      color: var(--text-primary);
+      margin-bottom: var(--space-md);
+    }
+    .ep-guest {
+      font-size: 0.85rem; color: var(--text-tertiary);
+      letter-spacing: 0.04em; margin-bottom: var(--space-xl);
+    }
+    .ep-guest strong { color: var(--text-secondary); font-weight: 500; }
+
+    hr.divider {
+      border: none; width: 48px; background: var(--pink);
+      height: 2px; margin: var(--space-xl) 0;
+    }
+
+    /* Spotify embed */
+    .spotify-wrap {
+      margin-bottom: var(--space-xl);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .spotify-wrap iframe {
+      display: block; border-radius: 4px;
+    }
+
+    /* Episode links row */
+    .ep-links {
+      display: flex; gap: var(--space-md);
+      flex-wrap: wrap; margin-bottom: var(--space-xl);
+    }
+    .ep-links a {
+      font-size: 0.8rem; font-weight: 500; letter-spacing: 0.04em;
+      color: var(--pink-deep); text-decoration: none;
+      border: 1px solid var(--pink-soft); padding: 6px 16px;
+      border-radius: 2px;
+      transition: background var(--duration-fast) var(--ease-out-quart);
+    }
+    .ep-links a:hover { background: var(--pink-whisper); }
+
+    /* Description */
+    .ep-desc {
+      font-size: 0.95rem; color: var(--text-secondary);
+      line-height: 1.75; font-weight: 300;
+      max-width: 58ch; margin-bottom: var(--space-xl);
+    }
+
+    /* Timestamps */
+    .timestamps-section { margin-top: var(--space-xl); }
+    .timestamps-section h2 {
+      font-size: 0.75rem; font-weight: 500; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--pink-deep);
+      margin-bottom: var(--space-xl);
+    }
+
+    .part-block { margin-bottom: var(--space-2xl); }
+    .part-title {
+      font-family: 'Playfair Display', 'Noto Sans TC', serif;
+      font-size: 1rem; font-weight: 500;
+      color: var(--text-primary);
+      padding-bottom: var(--space-md);
+      border-bottom: 1px solid var(--rule-color);
+      margin-bottom: var(--space-lg);
+    }
+    .part-title .part-num {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--pink-deep); margin-right: var(--space-sm);
+    }
+
+    .timestamp-list { list-style: none; }
+    .timestamp-list li {
+      display: flex; gap: var(--space-md);
+      align-items: baseline;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--rule-color);
+      font-size: 0.9rem;
+      transition: background var(--duration-fast) var(--ease-out-quart),
+                  padding-left var(--duration-fast) var(--ease-out-quart);
+    }
+    .timestamp-list li:last-child { border-bottom: none; }
+    .timestamp-list li:hover {
+      background: linear-gradient(90deg, var(--pink-whisper) 0%, transparent 70%);
+      padding-left: var(--space-sm);
+    }
+    .ts-time {
+      font-family: 'Fraunces', serif;
+      font-size: 0.78rem; font-weight: 300;
+      color: var(--pink-deep); min-width: 52px;
+      letter-spacing: 0.03em; flex-shrink: 0;
+      padding-top: 1px;
+    }
+    .ts-label { color: var(--text-secondary); line-height: 1.5; font-weight: 300; }
+
+    /* Social */
+    .social {
+      display: flex; gap: var(--space-lg);
+      margin-top: var(--space-2xl); flex-wrap: wrap;
+    }
+    .social a {
+      font-size: 0.8rem; font-weight: 400; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--text-tertiary);
+      text-decoration: none;
+      transition: color var(--duration-fast) var(--ease-out-quart);
+    }
+    .social a:hover { color: var(--pink-deep); }
+
+    footer {
+      margin-top: var(--space-3xl); padding-bottom: var(--space-xl);
+      font-size: 0.75rem; color: var(--text-tertiary);
+      letter-spacing: 0.05em;
+    }
+
+    /* Reveal animations */
+    .reveal {
+      opacity: 0; transform: translateY(16px);
+      animation: reveal-in var(--duration-enter) var(--ease-out-quart) forwards;
+    }
+    .reveal-d1 { animation-delay: 80ms; }
+    .reveal-d2 { animation-delay: 160ms; }
+    .reveal-d3 { animation-delay: 240ms; }
+    .reveal-d4 { animation-delay: 320ms; }
+    .reveal-d5 { animation-delay: 400ms; }
+    @keyframes reveal-in { to { opacity: 1; transform: translateY(0); } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { animation: fade-only 200ms ease-out forwards; }
+      @keyframes fade-only { to { opacity: 1; transform: none; } }
+      .ambient-shape { animation: none; }
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: var(--space-lg) var(--space-md); }
+      .lang-toggle { top: var(--space-md); right: var(--space-md); }
+      .social { gap: var(--space-md); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ambient">
+    <div class="ambient-shape ambient-1"></div>
+    <div class="ambient-shape ambient-2"></div>
+    <div class="ambient-shape ambient-3"></div>
+  </div>
+
+  <div class="lang-toggle">
+    <button class="lang-btn active" data-lang="en">En</button>
+    <button class="lang-btn" data-lang="zh">中文</button>
+  </div>
+
+  <div class="container">
+
+    <a href="/" class="back-link reveal" data-en="All Episodes" data-zh="所有集數">All Episodes</a>
+
+    <!-- Episode header -->
+    <span class="ep-label reveal reveal-d1">EP 01</span>
+    <h1 class="ep-title reveal reveal-d2"
+        data-en="Where Do Ideas Come From? | Building an AI-Native Organization"
+        data-zh="想法從哪裡來？| 打造 AI 原生組織">
+      Where Do Ideas Come From? | Building an AI-Native Organization
+    </h1>
+    <p class="ep-guest reveal reveal-d3"
+       data-en="Guest: Qiajin Shen — Founder, ideaFlow / 造梦次元 · Hosts: Tongtong & Clara"
+       data-zh="嘉宾：沈洽金 — ideaFlow / 造梦次元 创始人 · 主持：Tongtong & Clara">
+      Guest: <strong>Qiajin Shen</strong> — Founder, ideaFlow / 造梦次元 · Hosts: Tongtong &amp; Clara
+    </p>
+
+    <!-- Spotify embed -->
+    <div class="spotify-wrap reveal reveal-d4">
+      <iframe
+        src="https://open.spotify.com/embed/episode/5Hkm1PTaFfBJZQrcjZWjOW?utm_source=generator&theme=0"
+        width="100%" height="152" frameborder="0"
+        allowfullscreen
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy">
+      </iframe>
+    </div>
+
+    <!-- Links -->
+    <div class="ep-links reveal reveal-d5">
+      <a href="https://open.spotify.com/episode/5Hkm1PTaFfBJZQrcjZWjOW?si=RbIGxDSRQXqVcHu83wckbg" target="_blank" rel="noopener"
+         data-en="▶ Listen on Spotify" data-zh="▶ Spotify 收聽">▶ Listen on Spotify</a>
+      <a href="https://unplannedventurepodcast.substack.com/p/how-a-50-person-ai-company-punches" target="_blank" rel="noopener"
+         data-en="📖 Read — Pt. 1" data-zh="📖 閱讀（上）">📖 Read — Pt. 1</a>
+      <a href="https://open.substack.com/pub/unplannedventurepodcast/p/in-conversation-with-qiajin-shen" target="_blank" rel="noopener"
+         data-en="📖 Read — Pt. 2" data-zh="📖 閱讀（下）">📖 Read — Pt. 2</a>
+    </div>
+
+    <!-- Description -->
+    <p class="ep-desc"
+       data-en="Everyone talks AI-native. Qiajin Shen actually built it. His company ideaFlow runs 造梦次元, one of China's fastest-growing AI content communities with over 10 million users — and they treat AI as a co-worker, not a tool. In this episode: how a 50-person startup pulled off real org-level AI transformation, why AI comments got killed after 3 days, and what &quot;aliveness&quot; means when your product is built on AI characters."
+       data-zh="所有人都在说 AI Native，但真的有人做到了吗？沈洽金的公司想法流，产品造梦次元——中国增长最快的 AI 原生内容社区之一，累计用户超过 1000 万。他们不只是在用 AI，而是在把 AI 当同事。这一期：50 人公司怎么做到组织级 AI 转型？AI 评论为什么上线三天就砍掉？以及，做 AI 社交产品，「活人感」意味着什么？">
+      Everyone talks AI-native. Qiajin Shen actually built it. His company ideaFlow runs 造梦次元, one of China's fastest-growing AI content communities with over 10 million users — and they treat AI as a co-worker, not a tool. In this episode: how a 50-person startup pulled off real org-level AI transformation, why AI comments got killed after 3 days, and what "aliveness" means when your product is built on AI characters.
+    </p>
+
+    <hr class="divider">
+
+    <!-- Timestamps -->
+    <section class="timestamps-section">
+      <h2 data-en="Chapters" data-zh="时间轴">Chapters</h2>
+
+      <!-- Part 1 -->
+      <div class="part-block">
+        <p class="part-title">
+          <span class="part-num">Part 1</span>
+          <span data-en="How an AI-Native Org Actually Works"
+                data-zh="AI Native 组织是怎么运作的">How an AI-Native Org Actually Works</span>
+        </p>
+        <ul class="timestamp-list">
+          <li><span class="ts-time">0:09</span><span class="ts-label" data-en="Introductions — three P-types walk in" data-zh="三个P人自我介绍">Introductions — three P-types walk in</span></li>
+          <li><span class="ts-time">1:21</span><span class="ts-label" data-en="What is ideaFlow? Why &quot;ideaFlow&quot;?" data-zh="想法流是什么？为什么叫 ideaFlow？">What is ideaFlow? Why "ideaFlow"?</span></li>
+          <li><span class="ts-time">3:10</span><span class="ts-label" data-en="Company values: &quot;Real, Effective, Tenacious, Extreme&quot;" data-zh="企业文化「真实有效、坚韧极致」怎么来的">Company values: "Real, Effective, Tenacious, Extreme"</span></li>
+          <li><span class="ts-time">4:55</span><span class="ts-label" data-en="Full-chain AI: from idea → PRD → code" data-zh="全链路 AI 化：从 idea 到需求文档到代码">Full-chain AI: from idea → PRD → code</span></li>
+          <li><span class="ts-time">6:23</span><span class="ts-label" data-en="How they handed data analysis to AI" data-zh="数据分析怎么交给 AI 跑">How they handed data analysis to AI</span></li>
+          <li><span class="ts-time">10:03</span><span class="ts-label" data-en="AI transformation: top-down or bottom-up?" data-zh="AI 转型是自上而下还是自下而上？">AI transformation: top-down or bottom-up?</span></li>
+          <li><span class="ts-time">11:05</span><span class="ts-label" data-en="Context infrastructure — the recording permissions story" data-zh="Context 基建：AI Native 的前提条件（录音权限的故事）">Context infrastructure — the recording permissions story</span></li>
+          <li><span class="ts-time">12:13</span><span class="ts-label" data-en="Feishu + database integration: giving AI always-on org context" data-zh="飞书 + 数据库打通，让 AI 随时调用组织信息">Feishu + database integration: giving AI always-on org context</span></li>
+          <li><span class="ts-time">19:39</span><span class="ts-label" data-en="The monetization report Clara thought came from a co-founder session" data-zh="那份让 Clara 以为是联创讨论出来的商业化报告">The monetization report Clara thought came from a co-founder session</span></li>
+        </ul>
+      </div>
+
+      <!-- Part 2 -->
+      <div class="part-block">
+        <p class="part-title">
+          <span class="part-num">Part 2</span>
+          <span data-en="AI-Assisted Decisions & Hiring in the AI Era"
+                data-zh="AI 辅助决策 & AI 时代怎么招人">AI-Assisted Decisions &amp; Hiring in the AI Era</span>
+        </p>
+        <ul class="timestamp-list">
+          <li><span class="ts-time">24:24</span><span class="ts-label" data-en="Sent AI 10+ logo versions — it picked the same one as the best designer" data-zh="十几版 logo 发给 AI，它选的跟最好的设计师一样">Sent AI 10+ logo versions — it picked the same one as the best designer</span></li>
+          <li><span class="ts-time">25:41</span><span class="ts-label" data-en="Tongtong's four intern bots: #1 through #4" data-zh="Tongtong 的四个「实习生 bot」：1号到4号">Tongtong's four intern bots: #1 through #4</span></li>
+          <li><span class="ts-time">31:28</span><span class="ts-label" data-en="What is &quot;Skill&quot;? Why it's the core of AI collaboration" data-zh="Skill 是什么？为什么它是 AI 协作的核心">What is "Skill"? Why it's the core of AI collaboration</span></li>
+          <li><span class="ts-time">34:16</span><span class="ts-label" data-en="Who to hire — why indie developer backgrounds matter" data-zh="招什么样的人？为什么独立开发者背景很重要">Who to hire — why indie developer backgrounds matter</span></li>
+          <li><span class="ts-time">36:31</span><span class="ts-label" data-en="Interview method: the more specific the question, the better" data-zh="面试方法：问得越细越好">Interview method: the more specific the question, the better</span></li>
+          <li><span class="ts-time">37:31</span><span class="ts-label" data-en="Why fresh graduates are the most AI-native" data-zh="为什么这批应届生反而最 AI Native">Why fresh graduates are the most AI-native</span></li>
+          <li><span class="ts-time">39:48</span><span class="ts-label" data-en="Architecture, landscape design… does your major even matter?" data-zh="建筑专业、园林专业……专业背景重要吗？">Architecture, landscape design… does your major even matter?</span></li>
+          <li><span class="ts-time">41:40</span><span class="ts-label" data-en="Managing a team from 20 to 50+ as a P-type" data-zh="从 20 多人到 50 多人，P 人怎么管团队">Managing a team from 20 to 50+ as a P-type</span></li>
+          <li><span class="ts-time">42:08</span><span class="ts-label" data-en="AI is an extreme J-type — perfect pairing for ADHD" data-zh="AI 是超级 J 人，刚好配 ADHD">AI is an extreme J-type — perfect pairing for ADHD</span></li>
+        </ul>
+      </div>
+
+      <!-- Part 3 -->
+      <div class="part-block">
+        <p class="part-title">
+          <span class="part-num">Part 3</span>
+          <span data-en="Product Philosophy: Aliveness, Old Needs, Going Global"
+                data-zh="产品哲学：活人感、老需求、出海">Product Philosophy: Aliveness, Old Needs, Going Global</span>
+        </p>
+        <ul class="timestamp-list">
+          <li><span class="ts-time">45:28</span><span class="ts-label" data-en="Best moment a paying user described: eating an orange, AI said &quot;your hands smell like citrus&quot;" data-zh="付费用户说最爽的一刻：他在吃橘子，AI 说「你手上有柑橘味」">Best moment a paying user described: eating an orange, AI said "your hands smell like citrus"</span></li>
+          <li><span class="ts-time">46:26</span><span class="ts-label" data-en="Why &quot;aliveness&quot; matters more than AI capability" data-zh="活人感为什么比 AI 更重要">Why "aliveness" matters more than AI capability</span></li>
+          <li><span class="ts-time">46:33</span><span class="ts-label" data-en="AI comments feature: shipped, then killed in 3 days" data-zh="AI 评论上线三天就砍掉了">AI comments feature: shipped, then killed in 3 days</span></li>
+          <li><span class="ts-time">47:34</span><span class="ts-label" data-en="All needs are old needs — the more root the need, the more durable" data-zh="需求都是老需求，越 root 的东西越持续">All needs are old needs — the more root the need, the more durable</span></li>
+          <li><span class="ts-time">51:32</span><span class="ts-label" data-en="Why Tongtong instantly got 造梦次元 (Taiwanese teen romance novels)" data-zh="Tongtong 为什么第一眼就 get 到造梦次元（台湾少女小说）">Why Tongtong instantly got 造梦次元 (Taiwanese teen romance novels)</span></li>
+          <li><span class="ts-time">1:09:28</span><span class="ts-label" data-en="造梦次元's overseas expansion plan" data-zh="造梦次元出海计划">造梦次元's overseas expansion plan</span></li>
+          <li><span class="ts-time">1:13:24</span><span class="ts-label" data-en="Why Asia is the first stop" data-zh="为什么第一站选亚洲">Why Asia is the first stop</span></li>
+          <li><span class="ts-time">1:21:35</span><span class="ts-label" data-en="How 50 people do 500 people's work — what actually drives it?" data-zh="AI 时代 50 个人能干 500 人的活，靠的是什么？">How 50 people do 500 people's work — what actually drives it?</span></li>
+        </ul>
+      </div>
+
+      <!-- Part 4 -->
+      <div class="part-block">
+        <p class="part-title">
+          <span class="part-num">Part 4</span>
+          <span data-en="How AI Changed Our Daily Lives"
+                data-zh="AI 改变了我们的生活">How AI Changed Our Daily Lives</span>
+        </p>
+        <ul class="timestamp-list">
+          <li><span class="ts-time">1:31:18</span><span class="ts-label" data-en="Advice for young people: imagination, judgment, curiosity" data-zh="给年轻人的建议：想象力、判断力、好奇心">Advice for young people: imagination, judgment, curiosity</span></li>
+          <li><span class="ts-time">1:34:12</span><span class="ts-label" data-en="AI reading Tongtong's sleep data, fixing Clara's AC" data-zh="AI帮彤彤看睡眠数据、帮 Clara 修空调">AI reading Tongtong's sleep data, fixing Clara's AC</span></li>
+          <li><span class="ts-time">1:36:00</span><span class="ts-label" data-en="Qiajin watching 《太平年》, using AI to map Five Dynasties character relationships" data-zh="洽金追《太平年》，让 AI 画五代十国人物关系图">Qiajin watching 《太平年》, using AI to map Five Dynasties character relationships</span></li>
+          <li><span class="ts-time">1:38:05</span><span class="ts-label" data-en="Where did the northeast grandpa put the blue box? Doubao remembers" data-zh="东北老大爷把蓝色盒子放哪了？豆包帮他记">Where did the northeast grandpa put the blue box? Doubao remembers</span></li>
+          <li><span class="ts-time">1:41:44</span><span class="ts-label" data-en="AI amplifies curiosity — discovering curiosity you didn't know you had" data-zh="AI 放大好奇心：以前不知道自己有的好奇心">AI amplifies curiosity — discovering curiosity you didn't know you had</span></li>
+          <li><span class="ts-time">1:46:42</span><span class="ts-label" data-en="AI as amplifier — if your org is loose, it makes you looser" data-zh="AI 是放大器——你的组织松散，它让你更松散">AI as amplifier — if your org is loose, it makes you looser</span></li>
+          <li><span class="ts-time">1:48:14</span><span class="ts-label" data-en="Filter bubbles, guilt, and where products should hold back" data-zh="信息茧房、愧疚感，和产品该在哪里收手">Filter bubbles, guilt, and where products should hold back</span></li>
+          <li><span class="ts-time">1:49:18</span><span class="ts-label" data-en="Zhang Xiaolong's &quot;use it and leave&quot;" data-zh="张小龙的「用完即走」">Zhang Xiaolong's "use it and leave"</span></li>
+          <li><span class="ts-time">1:56:24</span><span class="ts-label" data-en="Three P-types sort their downloads folder live" data-zh="三个P人整理下载文件夹">Three P-types sort their downloads folder live</span></li>
+          <li><span class="ts-time">1:58:52</span><span class="ts-label" data-en="Using AI to track calories (the hard part is remembering to take the photo)" data-zh="让 AI 帮你记卡路里（但最难的是忘记拍照）">Using AI to track calories (the hard part is remembering to take the photo)</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Social -->
+    <div class="social">
+      <a href="https://open.spotify.com/show/033cyHplEFGw5AYxsdxpvj?si=QTD3WBU-Qx6qqbZ6YKK4GQ" target="_blank" rel="noopener">Spotify</a>
+      <a href="https://www.youtube.com/@unplannedventurepodcast" target="_blank" rel="noopener">YouTube</a>
+      <a href="#" target="_blank" rel="noopener">小宇宙</a>
+      <a href="https://unplannedventurepodcast.substack.com/" target="_blank" rel="noopener">Substack</a>
+    </div>
+
+    <footer data-en="made with warmth" data-zh="用心制作">made with warmth</footer>
+  </div>
+
+  <script>
+    let currentLang = 'en';
+    const langBtns = document.querySelectorAll('.lang-btn');
+
+    langBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const lang = btn.dataset.lang;
+        if (lang === currentLang) return;
+        currentLang = lang;
+        langBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        document.querySelectorAll('[data-en]').forEach(el => {
+          if (el.tagName === 'INPUT') return;
+          const text = el.dataset[lang];
+          if (text) el.textContent = text;
+        });
+
+        // Guest line needs innerHTML for <strong>
+        const guestEl = document.querySelector('.ep-guest');
+        if (lang === 'en') {
+          guestEl.innerHTML = 'Guest: <strong>Qiajin Shen</strong> — Founder, ideaFlow / 造梦次元 · Hosts: Tongtong &amp; Clara';
+        } else {
+          guestEl.innerHTML = '嘉宾：<strong>沈洽金</strong> — ideaFlow / 造梦次元 创始人 · 主持：Tongtong &amp; Clara';
+        }
+
+        localStorage.setItem('lang', lang);
+      });
+    });
+
+    const savedLang = localStorage.getItem('lang');
+    if (savedLang && savedLang !== 'en') {
+      document.querySelector(`[data-lang="${savedLang}"]`)?.click();
+    }
+
+    // Ambient parallax
+    document.addEventListener('mousemove', (e) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 2;
+      const y = (e.clientY / window.innerHeight - 0.5) * 2;
+      document.querySelector('.ambient-1').style.transform = `translate(${x * 12}px, ${y * 12}px)`;
+      document.querySelector('.ambient-2').style.transform = `translate(${x * -8}px, ${y * -8}px)`;
+      document.querySelector('.ambient-3').style.transform = `translate(${x * 15}px, ${y * 6}px)`;
+    });
+  </script>
+</body>
+</html>
