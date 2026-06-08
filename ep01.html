@@ -244,6 +244,19 @@
     .ep-links a:hover { background: var(--pink-whisper); }
 
     /* Description */
+    .ep-cover {
+      margin: var(--space-xl) 0;
+      border-radius: 12px;
+      overflow: hidden;
+      max-height: 440px;
+    }
+    .ep-cover img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+
     .ep-desc {
       font-size: 0.95rem; color: var(--text-secondary);
       line-height: 1.75; font-weight: 300;
@@ -518,6 +531,10 @@
          data-en="🎙 Listen on 小宇宙" data-zh="🎙 小宇宙收聽">🎙 Listen on 小宇宙</a>
       <a href="https://www.youtube.com/watch?v=ekISWHngY7w" target="_blank" rel="noopener"
          data-en="▶ Watch on YouTube" data-zh="▶ YouTube 觀看">▶ Watch on YouTube</a>
+    </div>
+
+    <div class="ep-cover">
+      <img src="/images/ep01-cover.jpg" alt="EP 01 — Qiajin Shen of ideaFlow with Tongtong &amp; Clara">
     </div>
 
     <!-- Description -->
